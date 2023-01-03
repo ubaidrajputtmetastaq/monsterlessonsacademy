@@ -4,33 +4,37 @@ export const getComments = async () => {
       id: "1",
       body: "First comment",
       username: "Jack",
-      userId: "1",
+      userId: "11",
       parentId: null,
       createdAt: "2021-08-16T23:00:33.010+02:00",
+      reactions: [],
     },
     {
       id: "2",
       body: "Second comment",
       username: "John",
-      userId: "2",
+      userId: "22",
       parentId: null,
       createdAt: "2021-08-16T23:00:33.010+02:00",
+      reactions: [],
     },
     {
       id: "3",
       body: "First comment first child",
       username: "John",
-      userId: "2",
+      userId: "33",
       parentId: "1",
       createdAt: "2021-08-16T23:00:33.010+02:00",
+      reactions: [],
     },
     {
       id: "4",
       body: "Second comment second child",
       username: "John",
-      userId: "2",
+      userId: "44",
       parentId: "2",
       createdAt: "2021-08-16T23:00:33.010+02:00",
+      reactions: [],
     },
   ];
 };
@@ -43,6 +47,7 @@ export const createComment = async (text, parentId = null) => {
     userId: "1",
     username: "John",
     createdAt: new Date().toISOString(),
+    reactions: [],
   };
 };
 

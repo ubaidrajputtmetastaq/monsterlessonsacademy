@@ -1,4 +1,8 @@
 import CommentForm from "./CommentForm";
+import {
+  ReactionBarSelector,
+  ReactionCounter,
+} from "@charkour/react-reactions";
 
 const Comment = ({
   comment,
@@ -10,7 +14,10 @@ const Comment = ({
   addComment,
   parentId = null,
   currentUserId,
+  handleReactions,
 }) => {
+  console.log("🚀 ~ file: Comment.js:19 ~ comment", comment);
+  //console.log("🚀 ~ file: Comment.js:18 ~ comment", comment);
   const isEditing =
     activeComment &&
     activeComment.id === comment.id &&
@@ -23,6 +30,7 @@ const Comment = ({
   const timePassed = new Date() - new Date(comment.createdAt) > fiveMinutes;
   const canDelete =
     currentUserId === comment.userId && replies.length === 0 && !timePassed;
+  //console.log("🚀 ~ file: Comment.js:32 ~ currentUserId", currentUserId);
   const canReply = Boolean(currentUserId);
   const canEdit = currentUserId === comment.userId && !timePassed;
   const replyId = parentId ? parentId : comment.id;
@@ -38,6 +46,14 @@ const Comment = ({
           <div>{createdAt}</div>
         </div>
         {!isEditing && <div className="comment-text">{comment.body}</div>}
+        {currentUserId !== comment.userId && (
+          <ReactionBarSelector
+            onSelect={(reaction) => {
+              handleReactions(comment.id, reaction);
+            }}
+          />
+        )}
+
         {isEditing && (
           <CommentForm
             submitLabel="Update"
@@ -80,10 +96,12 @@ const Comment = ({
           )}
         </div>
         {isReplying && (
-          <CommentForm
-            submitLabel="Reply"
-            handleSubmit={(text) => addComment(text, replyId)}
-          />
+          <div>
+            <CommentForm
+              submitLabel="Reply"
+              handleSubmit={(text) => addComment(text, replyId)}
+            />
+          </div>
         )}
         {replies.length > 0 && (
           <div className="replies">
@@ -99,6 +117,7 @@ const Comment = ({
                 parentId={comment.id}
                 replies={[]}
                 currentUserId={currentUserId}
+                handleReactions={handleReactions}
               />
             ))}
           </div>

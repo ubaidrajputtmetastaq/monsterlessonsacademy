@@ -51,6 +51,27 @@ const Comments = ({ commentsUrl, currentUserId }) => {
     }
   };
 
+  const handleReactions = (commentId, reaction) => {
+    const updatedBackendComments = backendComments.map((backendComment) => {
+      if (backendComment.id === commentId) {
+        const reactionIndex = backendComment.reactions.findIndex(
+          (r) => r.userId === currentUserId
+        );
+        if (reactionIndex === -1) {
+          backendComment.reactions.push({
+            userId: currentUserId,
+            reaction,
+          });
+        } else {
+          backendComment.reactions[reactionIndex].reaction = reaction;
+        }
+      }
+      return backendComment;
+    });
+
+    setBackendComments(updatedBackendComments);
+  };
+
   useEffect(() => {
     getCommentsApi().then((data) => {
       setBackendComments(data);
@@ -74,6 +95,7 @@ const Comments = ({ commentsUrl, currentUserId }) => {
             deleteComment={deleteComment}
             updateComment={updateComment}
             currentUserId={currentUserId}
+            handleReactions={handleReactions}
           />
         ))}
       </div>
